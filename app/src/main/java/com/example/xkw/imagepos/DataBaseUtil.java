@@ -34,11 +34,12 @@ public class DataBaseUtil {
         try {
             db = dbHelper.getReadableDatabase();
             cursor = db.query(TABLE_NAME,
-                    new String[]{"uri"},
+                    new String[]{"ID", "uri"},
                     "location = ?",
-                    new String[] {location},
+                    new String[] {location,},
                     null, null, null);
-            return cursor.getString(cursor.getColumnIndex("location"));
+            cursor.moveToFirst();
+            return cursor.getString(cursor.getColumnIndex("uri"));
         }
         catch (Exception e){
             Log.e("DataBaseUtil:", e.toString());

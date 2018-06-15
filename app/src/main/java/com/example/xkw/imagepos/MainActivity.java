@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         imageView.setImageResource(R.drawable.cat);
 
         dbHelper = new DataBaseUtil(ImgPosApplication.getContext());
-        //dbHelper.query("中国");
+        imageView.setImageURI(Uri.parse(dbHelper.query("中国")));
     }
 
     @Override
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                             for(MapBean.AddressComponentsBean bean : componentsBeans){
                                 tv_result.append(bean.getLong_name() + "\n");
                                 dbHelper.insert(uri_str, bean.getLong_name());
-                                //dbHelper.query("中国");
+                                dbHelper.query("中国");
                             }
                         });
                     }
