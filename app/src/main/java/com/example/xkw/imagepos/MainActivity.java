@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Handler;
@@ -42,8 +43,11 @@ public class MainActivity extends AppCompatActivity {
 
     private float longitude;
     private float latitude;
+    private String uri_str;
+    private String location_str;
 
     private MapBean mapBean;
+    private DataBaseUtil dbHelper;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,12 +69,16 @@ public class MainActivity extends AppCompatActivity {
 
         imageView = (ImageView)findViewById(R.id.imgv_show);
         imageView.setImageResource(R.drawable.cat);
+
+        dbHelper = new DataBaseUtil(ImgPosApplication.getContext());
+        //dbHelper.query("中国");
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == SELECT_IMG && resultCode == RESULT_OK){
             Uri uri = data.getData();
+            uri_str = uri.toString();
             imageView.setImageURI(uri);
             try {
                 final InputStream inputStream = ImgPosApplication.getContext().getContentResolver().openInputStream(uri);
@@ -119,6 +127,8 @@ public class MainActivity extends AppCompatActivity {
                             setLocation("");
                             for(MapBean.AddressComponentsBean bean : componentsBeans){
                                 tv_result.append(bean.getLong_name() + "\n");
+                                dbHelper.insert(uri_str, bean.getLong_name());
+                                //dbHelper.query("中国");
                             }
                         });
                     }
